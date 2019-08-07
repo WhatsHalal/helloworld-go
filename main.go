@@ -51,7 +51,7 @@ func Run(args []string, sigs <-chan os.Signal, closeWG *sync.WaitGroup) int {
 
 	r := chi.NewRouter()
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello, world"))
+		w.Write([]byte("assalamualaikum, dunia"))
 	})
 
 	fmt.Printf("listening on http://127.0.0.1:%d\n", port)
