@@ -32,8 +32,8 @@ jobs:
       - run: go test -v ./...
 
   deploy-dev:
-    docker:
-      - image: circleci/golang:1.11.5-stretch
+    machine:
+      enabled: true
 
     steps:
       - attach_workspace:
