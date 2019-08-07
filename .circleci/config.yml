@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  # A job that makes sure the code builds
+  build:
+    docker:
+      - image: circleci/golang:1.11.5-stretch
+
+    steps:
+      - checkout
+
+      - run: go build
+
+  # A job that makes sure the tests pass
+  test:
+    docker:
+      - image: circleci/golang:1.11.5-stretch
+
+    steps:
+      - checkout
+
+      - run: go test -v ./...
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build
+
+      - test:
+          requires:
+            - build
+
