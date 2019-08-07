@@ -36,7 +36,7 @@ jobs:
       - image: circleci/golang:1.11.5-stretch
 
     steps:
-      - attach_to_workspace:
+      - attach_workspace:
           at: /tmp/workspace
 
       - add_ssh_keys:
