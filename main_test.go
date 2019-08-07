@@ -46,7 +46,7 @@ func TestHelloWorld(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !bytes.Equal(b, []byte("hello, world")) {
-		t.Fatalf("expecting response 'hello, world', got '%s' instead", string(b))
+	if !bytes.Equal(b, []byte("assalamualaikum, dunia")) {
+		t.Fatalf("expecting response 'assalamualaikum, dunia', got '%s' instead", string(b))
 	}
 }
