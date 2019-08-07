@@ -8,7 +8,18 @@ jobs:
     steps:
       - checkout
 
-      - run: go build
+      - run:
+          name: Build
+          command: |
+            export GOOS=linux
+            export GOARCH=amd64
+            mkdir -p bin
+            go build -o bin/helloworld-go .
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - bin
 
   # A job that makes sure the tests pass
   test:
@@ -20,6 +31,28 @@ jobs:
 
       - run: go test -v ./...
 
+  deploy-dev:
+    machine:
+      enabled: true
+
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - add_ssh_keys:
+          fingerprints:
+            - "ab:35:ea:48:7d:7b:a9:73:25:de:3c:2a:79:cf:49:22"
+
+      - run:
+          name: Copy build to server
+          command: |
+            scp /tmp/workspace/bin/helloworld-go circleci@$DEV_HOST:/home/circleci/
+
+      - run:
+          name: Deploy
+          command: |
+            ssh circleci@$DEV_HOST "sudo /home/circleci/build_helloworld.sh"
+
 workflows:
   version: 2
   build-test:
@@ -30,3 +63,10 @@ workflows:
           requires:
             - build
 
+      - deploy-dev:
+          requires:
+            - test
+
+          filters:
+            branches:
+              only: master
